@@ -2,8 +2,15 @@ module.exports = function (sequelize, Sequelize){
     var persona = require('./persona');
     var Persona = new persona(sequelize, Sequelize);
     
+    var detalleProducto=require('../models/detalleProducto');
+    var DetalleProducto = new detalleProducto(sequelize,Sequelize);
+    
+    var envio = require('../models/envio');
+    var Envio = new envio(sequelize, Sequelize);
+    
     var transaccion = require('./transaccion');
     var Transaccion = new transaccion(sequelize, Sequelize);
+    
     var Venta = sequelize.define('venta', {
         id: {
             autoIncrement: true,
@@ -40,6 +47,15 @@ module.exports = function (sequelize, Sequelize){
         constraints: true
 
     });
+    Venta.belongsTo(Envio, {
+        foreignKey: 'id_envio',
+        constraints: false
+    });
+
+    Venta.belongsTo(DetalleProducto,{
+    foreignKey:'id_detalleProducto',
+    constraints: true
+});
     return Venta;
 };
 
